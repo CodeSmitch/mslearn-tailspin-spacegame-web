@@ -13,9 +13,9 @@ pool:
 
 steps:
   - task: UseDotNet@2
-    displayName: 'Use .NET SDK 6.6.x'
+    displayName: 'Use .NET SDK 6.x'
     inputs:
-      version: 6.x
+      version: '6.x'
 
   - task: Npm@1
     displayName: 'Run npm install'
@@ -29,20 +29,20 @@ steps:
     displayName: 'Run gulp tasks'
 
   - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
-    displayName: 'Print build info'
+    displayName: 'Write build info'
     workingDirectory: Tailspin.SpaceGame.Web/wwwroot
 
   - task: DotNetCoreCLI@2
     displayName: 'Restore project dependencies'
     inputs:
-      command: restore
+      command: 'restore'
       projects: '**/*.csproj'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build the project - Release'
     inputs:
-      command: build
-      configuration: '--no-restore --configuration Release'
+      command: 'build'
+      arguments: '--no-restore --configuration Release'
       projects: '**/*.csproj'
 
   - task: DotNetCoreCLI@2
@@ -55,5 +55,5 @@ steps:
       zipAfterPublish: true
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish artifact: drop'
+    displayName: 'Publish Artifact: drop'
     condition: succeeded()
